@@ -1,0 +1,19 @@
+/********** CSS **********/
+:root {
+  --primary: #00B98E;
+  --secondary: #FF6922;
+  --light: #EFFDF5;
+  --dark: #0E2E50;
+}
+body{
+  padding-top: 50px;
+}
+
+.all{
+  max-width: 400px;
+  margin: auto;
+  
+}
+form{
+  padding: 0px 10px;
+}
