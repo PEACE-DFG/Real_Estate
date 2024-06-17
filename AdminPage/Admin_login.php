@@ -1,3 +1,7 @@
+<?php
+session_start();
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -28,27 +32,117 @@
 <body>
   
 <!-- All content -->
+<?php
+require "../Database/database.php";
+
+$errors = ""; // Initialize the error message variable
+
+if (isset($_POST['login'])) {
+    $email = $_POST['email'] ?? null;
+    $password = $_POST['password'] ?? null;
+    $code = $_POST['code'] ?? null; // Replace 'code' with the actual name attribute of your code input field
+
+
+    if (empty($email)) {
+        $errors = "Your email is required";
+    }
+
+    if (empty($password)) {
+        $errors = "Your password is required";
+    }
+
+    if (empty($errors)) {
+       $sql = "SELECT email, password, code FROM admin_users WHERE email = :email";
+
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(':email', $email);
+        $stmt->execute();
+
+
+
+        if ($stmt->rowCount() > 0) {
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            $verifiedPassword = password_verify($password, $result['password']);
+            $verifiedCode =  ($code === $result['code']);
+
+            if ($verifiedPassword && $verifiedCode) {
+                $_SESSION['email'] = $result['email'];
+                echo '
+                <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+                <script>
+                    Swal.fire({
+                        title: "Login successful",
+                        text: "Welcome Admin",
+                        icon: "success",
+                        confirmButtonText: "OK"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = "Dashboard/Admin_dashboard.php";
+                        }
+                    });
+                </script>';
+                
+            } else {
+                // Handle incorrect password
+                echo '
+                <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+                <script>
+                        Swal.fire({
+                            title: "Invalid Details",
+                            text: "Confirm Your login details. Check Your Email For verification of your ID Code or Re-Enter Your Password",
+                            icon: "error",
+                            confirmButtonText: "OK"
+                        });  
+                    </script>';
+            }
+        } else {
+            // Handle email not found
+            echo '            
+            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+            <script>
+                    Swal.fire({
+                        title: "Invalid Email",
+                        text: "The email entered is not found in our records",
+                        icon: "error",
+                        confirmButtonText: "OK"
+                    });
+                </script>';
+        }
+    }
+}
+?>
+
+ 
+
+
+
+    <?php if (!empty($errors)) : ?>
+    <div class="alert alert-danger" style='color:red;text-align:center;margin:auto;padding-left:50px' role="alert">
+      <?php echo $errors; ?>
+    </div>
+    <?php endif; ?>
+
     <section class="all">
       <div class=" text-center mb-2">
         <img src="https://icon-library.com/images/admin-login-icon/admin-login-icon-15.jpg" class="img-fluid w-25" alt="">
       </div>
-      <form action="" method="post">
-      <div class="form-floating mb-3">
-  <input type="text" class="form-control" id="floatingInput" placeholder="Username">
-  <label for="floatingInput">Username</label>
-</div>
+      <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
+               <div class="form-floating mb-3">
+                <input type="email" class="form-control" id="floatingInput" placeholder="Email" name="email">
+                <label for="floatingInput">Email</label>
+              </div>
 
-<div class="form-floating mb-3">
-  <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
-  <label for="floatingPassword">Password</label>
-</div>
-<div class="form-floating mb-3">
-  <input type="text" class="form-control" id="floatingPassword" placeholder="ID Code">
-  <label for="floatingPassword"> ID Code</label>
-</div>
-<div class="col-12">
-   <button class="btn btn-primary w-100 py-3 text-light" type="submit">Register</button>
-</div>
+              <div class="form-floating mb-3">
+                <input type="password" class="form-control" id="floatingPassword" placeholder="Password" name="password">
+                <label for="floatingPassword">Password</label>
+              </div>
+              <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="floatingPassword" placeholder="ID Code" name="code">
+                <label for="floatingPassword"> ID Code</label>
+              </div>
+              <div class="col-12">
+                <button class="btn btn-primary w-100 py-3 text-light" type="submit" name="login">Login</button>
+              </div>
 
       </form>
 

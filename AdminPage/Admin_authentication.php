@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -24,6 +26,9 @@
     <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/styles.css">
 
+     <!-- Include SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 </head>
 <body>
   
@@ -32,28 +37,31 @@
       <div class=" text-center mb-2">
         <img src="https://www.shareicon.net/data/256x256/2016/04/14/492851_admin_256x256.png" class="img-fluid w-25" alt="">
       </div>
-      <form action="" method="post">
-      <div class="form-floating mb-3">
-  <input type="text" class="form-control" id="floatingInput" placeholder="Username">
-  <label for="floatingInput">Username</label>
-</div>
-<div class="form-floating mb-3">
-  <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
-  <label for="floatingInput">Email address</label>
-</div>
-<div class="form-floating mb-3">
-  <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
-  <label for="floatingPassword">Password</label>
-</div>
-<div class="form-floating mb-3">
-  <input type="password" class="form-control" id="floatingPassword" placeholder="Repeat Password">
-  <label for="floatingPassword"> Repeat Password</label>
-</div>
-<div class="col-12">
-   <button class="btn btn-primary w-100 py-3 text-light" type="submit">Register</button>
-</div>
+      <?php
+        include_once 'Validation/register_authentication.php'
+      ?>
+      <form  action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
+    <div class="form-floating mb-3">
+        <input type="text" class="form-control" id="username" name="username" placeholder="Username" required>
+        <label for="username">Username</label>
+    </div>
+    <div class="form-floating mb-3">
+        <input type="email" class="form-control" id="email" name="email" placeholder="name@example.com" required>
+        <label for="email">Email address</label>
+    </div>
+    <div class="form-floating mb-3">
+        <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
+        <label for="password">Password</label>
+    </div>
+    <div class="form-floating mb-3">
+        <input type="password" class="form-control" id="repeat_password" name="repeat_password" placeholder="Repeat Password" required>
+        <label for="repeat_password">Repeat Password</label>
+    </div>
+    <div class="col-12">
+        <button class="btn btn-primary w-100 py-3 text-light" type="submit">Register</button>
+    </div>
+</form>
 
-      </form>
 
     </section>
 
@@ -64,6 +72,7 @@
     <script src="../assets/lib/easing/easing.min.js"></script>
     <script src="../assets/lib/waypoints/waypoints.min.js"></script>
     <script src="../assets/lib/owlcarousel/owl.carousel.min.js"></script>
+   
 
 </body>
 </html>
