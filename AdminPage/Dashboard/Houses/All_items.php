@@ -1,3 +1,46 @@
+<?php
+session_start();
+include_once dirname(__DIR__, 3) . '/Database/database.php';
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    if (isset($_POST['delete'])) {
+        $id = intval($_POST['id']);
+        $stmt = $pdo->prepare('DELETE FROM product WHERE id = :id');
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        echo "<script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Deleted',
+                text: 'Product deleted successfully!',
+                didClose: () => {
+                    window.location.href = 'display_products.php';
+                }
+            });
+        </script>";
+    } elseif (isset($_POST['mark_sold'])) {
+        $id = intval($_POST['id']);
+        $stmt = $pdo->prepare('UPDATE product SET building_status = "Sold" WHERE id = :id');
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        echo "<script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Updated',
+                text: 'Product marked as sold!',
+                didClose: () => {
+                    window.location.href = 'display_products.php';
+                }
+            });
+        </script>";
+    }
+}
+
+// Fetch all products
+$stmt = $pdo->query('SELECT * FROM product');
+$products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,15 +60,18 @@
   <!-- iCheck -->
   <link rel="stylesheet" href="../assets/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
   <!-- JQVMap -->
-  <link rel="stylesheet" href="../assets/plugins/jqvmap/jqvmap.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="../assets/dist/css/adminlte.min.css">
   <!-- overlayScrollbars -->
   <link rel="stylesheet" href="../assets/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
   <!-- Daterange picker -->
-  <link rel="stylesheet" href="../assets/plugins/daterangepicker/daterangepicker.css">
   <!-- summernote -->
   <link rel="stylesheet" href="../assets/plugins/summernote/summernote-bs4.min.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
@@ -53,7 +99,7 @@
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
       <!-- Navbar Search -->
-      <li class="nav-item">
+      <!-- <li class="nav-item">
         <a class="nav-link" data-widget="navbar-search" href="#" role="button">
           <i class="fas fa-search"></i>
         </a>
@@ -72,7 +118,7 @@
             </div>
           </form>
         </div>
-      </li>
+      </li> -->
 
      
      
@@ -102,21 +148,11 @@
           <img src="../assets/dist/img/user1-128x128.jpg" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">{Admin User}</a>
+          <a href="#" class="d-block">Admin</a>
         </div>
       </div>
 
-      <!-- SidebarSearch Form -->
-      <div class="form-inline">
-        <div class="input-group" data-widget="sidebar-search">
-          <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
-          <div class="input-group-append">
-            <button class="btn btn-sidebar">
-              <i class="fas fa-search fa-fw"></i>
-            </button>
-          </div>
-        </div>
-      </div>
+
 
       <!-- Sidebar Menu -->
       <nav class="mt-2">
@@ -133,13 +169,13 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="./Items.php" class="nav-link active">
+                <a href="./Items.php" class="nav-link ">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Add Items</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="./All_items.php" class="nav-link">
+                <a href="./All_items.php" class="nav-link active">
                   <i class="far fa-circle nav-icon"></i>
                   <p>All Items</p>
                 </a>
@@ -153,11 +189,55 @@
     <!-- /.sidebar -->
   </aside>
 
-
+  <div class="container mt-5">
+        <h1>Admin Panel</h1>
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr style="text-align:center">
+                        <th>Title</th>
+                        <th>Location</th>
+                        <th>Price</th>
+                        <th>Image</th>
+                        <th>Building Status</th>
+                        <th>Category</th>
+                        <th>Description</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($products as $product): ?>
+                    <tr style="text-align:center">
+                        <td><?php echo htmlspecialchars($product['title']); ?></td>
+                        <td><?php echo htmlspecialchars($product['location']); ?></td>
+                        <td><?php echo htmlspecialchars($product['price']); ?></td>
+                        <td><img src="<?php echo htmlspecialchars($product['image']); ?>" width="100" alt="Product Image"></td>
+                        <td><?php echo htmlspecialchars($product['building_status']); ?></td>
+                        <td><?php echo htmlspecialchars($product['category']); ?></td>
+                        <td><?php echo htmlspecialchars($product['description']); ?></td>
+                        <td style="text-align:center">
+                            <form action="" method="post" style="display:inline;">
+                                <input type="hidden" name="id" value="<?php echo $product['id']; ?>">
+                                <button type="submit" name="delete" class="btn btn-danger my-2" style="font-size:15px">Delete</button>
+                            </form>
+                            <form action="" method="post" style="display:inline;">
+                                <input type="hidden" name="id" value="<?php echo $product['id']; ?>">
+                                <button type="submit" name="mark_sold" class="btn btn-success" style="font-size:13px">Mark as Sold</button>
+                            </form>
+                        </td>
+                    </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
 
 
   
-<!-- jQuery -->
+
+
+
+    <!-- jQuery -->
 <script src="../assets/plugins/jquery/jquery.min.js"></script>
 <!-- jQuery UI 1.11.4 -->
 <script src="../assets/plugins/jquery-ui/jquery-ui.min.js"></script>
@@ -188,7 +268,6 @@
 <!-- AdminLTE App -->
 <script src="../assets/dist/js/adminlte.js"></script>
 <!-- AdminLTE for demo purposes -->
-<script src="../assets/dist/js/demo.js"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="../assets/dist/js/pages/dashboard.js"></script>
 </body>

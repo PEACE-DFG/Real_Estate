@@ -1,3 +1,7 @@
+<?php
+require 'submit_product.php';
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,9 +27,12 @@
   <!-- overlayScrollbars -->
   <link rel="stylesheet" href="../assets/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
   <!-- Daterange picker -->
-  <link rel="stylesheet" href="../assets/plugins/daterangepicker/daterangepicker.css">
   <!-- summernote -->
   <link rel="stylesheet" href="../assets/plugins/summernote/summernote-bs4.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
@@ -50,29 +57,11 @@
       </li>
     </ul>
 
+    
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
       <!-- Navbar Search -->
-      <li class="nav-item">
-        <a class="nav-link" data-widget="navbar-search" href="#" role="button">
-          <i class="fas fa-search"></i>
-        </a>
-        <div class="navbar-search-block">
-          <form class="form-inline">
-            <div class="input-group input-group-sm">
-              <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
-              <div class="input-group-append">
-                <button class="btn btn-navbar" type="submit">
-                  <i class="fas fa-search"></i>
-                </button>
-                <button class="btn btn-navbar" type="button" data-widget="navbar-search">
-                  <i class="fas fa-times"></i>
-                </button>
-              </div>
-            </div>
-          </form>
-        </div>
-      </li>
+     
 
      
      
@@ -102,22 +91,11 @@
           <img src="../assets/dist/img/user1-128x128.jpg" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">{Admin User}</a>
+          <a href="#" class="d-block">Admin</a>
         </div>
       </div>
 
-      <!-- SidebarSearch Form -->
-      <div class="form-inline">
-        <div class="input-group" data-widget="sidebar-search">
-          <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
-          <div class="input-group-append">
-            <button class="btn btn-sidebar">
-              <i class="fas fa-search fa-fw"></i>
-            </button>
-          </div>
-        </div>
-      </div>
-
+   
       <!-- Sidebar Menu -->
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
@@ -152,6 +130,111 @@
     </div>
     <!-- /.sidebar -->
   </aside>
+
+  
+     <!-- Content Wrapper. Contains page content -->
+     <div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Add Items through the form Below</h1>
+            <hr>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Admin</a></li>
+              <li class="breadcrumb-item active">ADD ITEMS</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- FORM -->
+    <div class="row">
+          <div class="col-md-12">
+            <div class="card card-default">
+              <div class="card-header">
+                <h3 class="card-title">Fill in the following to upload item to  the user page
+                </h3>
+              </div>
+              <div class="card-body p-0 " >
+                <div class="bs-stepper ">
+                    <!-- your steps here -->
+                    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post" class="container" enctype="multipart/form-data">
+    <div class="form-floating my-3">
+        <input type="text" class="form-control" id="floatingInput" placeholder="Title" name="title" required>
+        <label for="floatingInput">Title</label>
+    </div>
+    <div class="form-floating my-3">
+        <input type="text" class="form-control" id="floatingInput" placeholder="Location" name="location" required>
+        <label for="floatingInput">Location</label>
+    </div>
+    <div class="form-floating my-3">
+        <input type="text" class="form-control" id="floatingInput" placeholder="Price" name="price" required>
+        <label for="floatingInput">Price</label>
+    </div>
+    <div class="mb-3">
+        <label for="formFile" class="form-label">Add image</label>
+        <input class="form-control" type="file" id="formFile" name="image" accept=".jpg,.jpeg,.png" required>
+    </div>
+    <label for="formStatus" class="form-label">Building Status</label>
+    <br>
+    <select class="form-select mb-3" name="building_status" required>
+        <option value="For Rent">For Rent</option>
+        <option value="For Sell">For Sell</option>
+    </select>
+    <label for="formCategory" class="form-label">Category</label>
+    <br>
+    <select class="form-select mb-3" name="category" required>
+        <option value="Apartment">Apartment</option>
+        <option value="Villa">Villa</option>
+        <option value="Town House">Town House</option>
+        <option value="Office">Office</option>
+        <option value="Shop">Shop</option>
+    </select>
+    <div class="mb-3">
+        <label for="formDescription" class="form-label">Description</label>
+        <textarea class="form-control" id="formDescription" rows="3" placeholder="Description" name="description" required></textarea>
+    </div>
+    <div class="col-12">
+        <button class="btn btn-primary w-100 py-3 mb-4 text-light" type="submit">Submit</button>
+    </div>
+    <?php
+    if ($script !== '') {
+        echo $script;
+    }
+    ?>
+</form>
+
+                   
+                    <div class="line"></div>
+                 
+                  <div class="bs-stepper-content container">
+                    <!-- your steps content here -->
+                    <div id="logins-part" class="content container" role="tabpanel" aria-labelledby="logins-part-trigger">
+                    
+                    </div>
+                 
+                  </div>
+                </div>
+              </div>
+              <!-- /.card-body -->
+              <!-- <div class="card-footer">
+                Visit <a href="https://github.com/Johann-S/bs-stepper/#how-to-use-it">bs-stepper documentation</a> for more examples and information about the plugin.
+              </div> -->
+            </div>
+            <!-- /.card -->
+          </div>
+        </div>
+
+
+
+  </div>
+
+  
 
 
 
@@ -188,8 +271,9 @@
 <!-- AdminLTE App -->
 <script src="../assets/dist/js/adminlte.js"></script>
 <!-- AdminLTE for demo purposes -->
-<script src="../assets/dist/js/demo.js"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="../assets/dist/js/pages/dashboard.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </body>
 </html>
