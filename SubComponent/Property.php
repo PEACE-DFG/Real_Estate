@@ -26,32 +26,51 @@ try {
                     <div id="tab-1" class="tab-pane fade show p-0 active">
                         <div class="row g-4">
                         <?php foreach ($products as $product): ?>
-                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                    <div class="property-item rounded overflow-hidden">
-                    <div class="position-relative overflow-hidden">
+                            <?php
+                    $owner_whatsapp_number = '+2348116405518'; // Replace with the owner's WhatsApp number
 
-    <a href=""><img class="img-fluid" src="AdminPage/Dashboard/Houses/<?php echo ($product['image']) ?>" alt="<?php echo htmlspecialchars($product['title']); ?>" class="img-fluid " style="width:100%;height:200px"></a>
-    <div class="bg-primary rounded text-white position-absolute start-0 top-0 m-4 py-1 px-3"><?php echo htmlspecialchars($product['building_status']); ?></div>
-    <div class="bg-white rounded-top text-primary position-absolute start-0 bottom-0 mx-4 pt-1 px-3"><?php echo htmlspecialchars($product['category']); ?></div>
-</div>
+                    foreach ($products as $product) {
+                        $image_url = "https://yourdomain.com/AdminPage/Dashboard/Houses/" . $product['image'];
+                        $message = "*Hello, I am interested in the property titled* '" . htmlspecialchars($product['title']) . "'.\n\n"
+                                 . "*Here are the details:*\n"
+                                 . "*Title:* " . htmlspecialchars($product['title']) . "\n"
+                                 . "*Price:* " . htmlspecialchars($product['price']) . "\n"
+                                 . "*Description:* " . htmlspecialchars($product['description']) . "\n"
+                                 . "*Image:* " . $image_url . "\n";
 
-                        <div class="p-4 pb-0">
-                            <h5 class="text-primary mb-3"><i class="fa-solid fa-naira-sign"></i><?php echo htmlspecialchars($product['price']); ?></h5>
-                            <a class="d-block h5 mb-2" href=""><?php echo htmlspecialchars($product['title']); ?></a>
-                            <p><i class="fa fa-map-marker-alt text-primary me-2"></i><?php echo htmlspecialchars($product['location']); ?></p>
-                            <p style="overflow-y:hidden; height:100px"><?php echo htmlspecialchars($product['description']); ?></p>
+                        // Encode the message
+                        $encoded_message = urlencode($message);
                         
-                            <a href="">
-                                <button class="btn btn-success mb-2">Contact for more details</button>
-                            </a>
-                        </div>
-                        <div class="d-flex border-top">
-                            <small class="flex-fill text-center border-end py-2"><i class="fa-solid fa-building-user text-primary me-2"></i>Homes</small>
-                            <small class="flex-fill text-center border-end py-2"><i class="fa fa-bed text-primary me-2"></i>Bed</small>
-                            <small class="flex-fill text-center py-2"><i class="fa fa-bath text-primary me-2"></i>Bath</small>
+                        // Generate the WhatsApp link
+                        $whatsapp_link = "https://wa.me/$owner_whatsapp_number?text=$encoded_message";
+                    ?>
+                    <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                        <div class="property-item rounded overflow-hidden">
+                            <div class="position-relative overflow-hidden">
+                                <a href=""><img class="img-fluid" src="AdminPage/Dashboard/Houses/<?php echo ($product['image']) ?>" alt="<?php echo htmlspecialchars($product['title']); ?>" style="width:100%;height:200px"></a>
+                                <div class="bg-primary rounded text-white position-absolute start-0 top-0 m-4 py-1 px-3"><?php echo htmlspecialchars($product['building_status']); ?></div>
+                                <div class="bg-white rounded-top text-primary position-absolute start-0 bottom-0 mx-4 pt-1 px-3"><?php echo htmlspecialchars($product['category']); ?></div>
+                            </div>
+                            <div class="p-4 pb-0">
+                                <h5 class="text-primary mb-3"><i class="fa-solid fa-naira-sign"></i><?php echo htmlspecialchars($product['price']); ?></h5>
+                                <a class="d-block h5 mb-2" href=""><?php echo htmlspecialchars($product['title']); ?></a>
+                                <p><i class="fa fa-map-marker-alt text-primary me-2"></i><?php echo htmlspecialchars($product['location']); ?></p>
+                                <p style="overflow-y:hidden; height:100px"><?php echo htmlspecialchars($product['description']); ?></p>
+                                <a href="<?php echo $whatsapp_link; ?>" target="_blank">
+                                    <button class="btn btn-success mb-2">Contact for more details</button>
+                                </a>
+                            </div>
+                            <div class="d-flex border-top">
+                                <small class="flex-fill text-center border-end py-2"><i class="fa-solid fa-building-user text-primary me-2"></i>Homes</small>
+                                <small class="flex-fill text-center border-end py-2"><i class="fa fa-bed text-primary me-2"></i>Bed</small>
+                                <small class="flex-fill text-center py-2"><i class="fa fa-bath text-primary me-2"></i>Bath</small>
+                            </div>
                         </div>
                     </div>
-                </div>
+                    <?php
+                    }
+                    ?>
+
             <?php endforeach; ?>
 
                           
