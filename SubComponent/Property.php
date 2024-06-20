@@ -35,6 +35,7 @@ try {
                                  . "*Here are the details:*\n"
                                  . "*Title:* " . htmlspecialchars($product['title']) . "\n"
                                  . "*Price:* " . htmlspecialchars($product['price']) . "\n"
+                                 . "*Location:* " . htmlspecialchars($product['location']) . "\n"
                                  . "*Description:* " . htmlspecialchars($product['description']) . "\n"
                                  . "*Image:* " . $image_url . "\n";
 
@@ -57,7 +58,7 @@ try {
                                 <p><i class="fa fa-map-marker-alt text-primary me-2"></i><?php echo htmlspecialchars($product['location']); ?></p>
                                 <p style="overflow-y:hidden; height:100px"><?php echo htmlspecialchars($product['description']); ?></p>
                                 <a href="<?php echo $whatsapp_link; ?>" target="_blank">
-                                    <button class="btn btn-success mb-2">Contact for more details</button>
+                                    <button class="btn btn-success mb-2"><i class="fa-brands fa-whatsapp me-2 fs-3"></i>More details</button>
                                 </a>
                             </div>
                             <div class="d-flex border-top">
