@@ -19,10 +19,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             });
         </script>";
     } elseif (isset($_POST['mark_sold'])) {
-        $id = intval($_POST['id']);
-        $stmt = $pdo->prepare('UPDATE product SET building_status = "Sold" WHERE id = :id');
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-        $stmt->execute();
+      $id = intval($_POST['id']);
+      $stmt = $pdo->prepare('UPDATE product SET building_status = :status WHERE id = :id');
+      $status = "Sold";
+      $stmt->bindParam(':status', $status, PDO::PARAM_STR);
+      $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+      if ($stmt->execute()) {
         echo "<script>
             Swal.fire({
                 icon: 'success',
@@ -33,7 +35,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 }
             });
         </script>";
+    } else {
+        echo "<script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Failed to mark product as sold!'
+            });
+        </script>";
     }
+}
 }
 
 // Fetch all products
@@ -206,6 +217,7 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     </tr>
                 </thead>
                 <tbody>
+                  
                     <?php foreach ($products as $product): ?>
                     <tr style="text-align:center">
                         <td><?php echo htmlspecialchars($product['title']); ?></td>
@@ -222,7 +234,7 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             </form>
                             <form action="" method="post" style="display:inline;">
                                 <input type="hidden" name="id" value="<?php echo $product['id']; ?>">
-                                <button type="submit" name="mark_sold" class="btn btn-success" style="font-size:13px">Mark as Sold</button>
+                                <button type="submit" name="mark_sold" class="btn btn-success" style="font-size:13px" value="Sold">Mark as Sold</button>
                             </form>
                         </td>
                     </tr>
@@ -231,6 +243,7 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
             </table>
         </div>
     </div>
+    
 
 
   
