@@ -36,18 +36,19 @@ try {
 </div>
 
                         <div class="p-4 pb-0">
-                            <h5 class="text-primary mb-3">$<?php echo htmlspecialchars($product['price']); ?></h5>
+                            <h5 class="text-primary mb-3"><i class="fa-solid fa-naira-sign"></i><?php echo htmlspecialchars($product['price']); ?></h5>
                             <a class="d-block h5 mb-2" href=""><?php echo htmlspecialchars($product['title']); ?></a>
                             <p><i class="fa fa-map-marker-alt text-primary me-2"></i><?php echo htmlspecialchars($product['location']); ?></p>
-                            <p><?php echo htmlspecialchars($product['description']); ?></p>
+                            <p style="overflow-y:hidden; height:100px"><?php echo htmlspecialchars($product['description']); ?></p>
+                        
                             <a href="">
-                                <button class="btn btn-success mb-2">Details</button>
+                                <button class="btn btn-success mb-2">Contact for more details</button>
                             </a>
                         </div>
                         <div class="d-flex border-top">
-                            <small class="flex-fill text-center border-end py-2"><i class="fa fa-ruler-combined text-primary me-2"></i>1000 Sqft</small>
-                            <small class="flex-fill text-center border-end py-2"><i class="fa fa-bed text-primary me-2"></i>3 Bed</small>
-                            <small class="flex-fill text-center py-2"><i class="fa fa-bath text-primary me-2"></i>2 Bath</small>
+                            <small class="flex-fill text-center border-end py-2"><i class="fa-solid fa-building-user text-primary me-2"></i>Homes</small>
+                            <small class="flex-fill text-center border-end py-2"><i class="fa fa-bed text-primary me-2"></i>Bed</small>
+                            <small class="flex-fill text-center py-2"><i class="fa fa-bath text-primary me-2"></i>Bath</small>
                         </div>
                     </div>
                 </div>

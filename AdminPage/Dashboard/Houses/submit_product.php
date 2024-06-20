@@ -76,7 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     title: 'Success',
                     text: 'Product added successfully!'
                 }).then(() => {
-                    window.location.href = 'Items.php';
+                    window.location.href = 'All_items.php';
                 });
             </script>";
         } catch (PDOException $e) {
