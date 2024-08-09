@@ -55,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     } else {
         try {
             // Prepare an SQL statement
-            $stmt = $pdo->prepare('INSERT INTO product (title, location, price, image, building_status, category, description) VALUES (:title, :location, :price, :image, :building_status, :category, :description)');
+            $stmt = $pdo->prepare('INSERT INTO products (title, location, price, image, building_status, category, description) VALUES (:title, :location, :price, :image, :building_status, :category, :description)');
 
             // Bind the parameters
             $stmt->bindParam(':title', $title, PDO::PARAM_STR);

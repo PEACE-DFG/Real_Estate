@@ -7,7 +7,7 @@ $alert_script = '';
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['delete'])) {
         $id = intval($_POST['id']);
-        $stmt = $pdo->prepare('DELETE FROM product WHERE id = :id');
+        $stmt = $pdo->prepare('DELETE FROM products WHERE id = :id');
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
         $alert_script = "
@@ -22,41 +22,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 }
             });
         </script>";
-    } elseif (isset($_POST['mark_sold'])) {
-        $id = intval($_POST['id']);
-        $stmt = $pdo->prepare('UPDATE product SET building_status = :status WHERE id = :id');
-        $status = "Sold";
-        $stmt->bindParam(':status', $status, PDO::PARAM_STR);
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-        if ($stmt->execute()) {
-            $alert_script = "
-            <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>
-            <script>
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Updated',
-                    text: 'Product marked as sold!',
-                    didClose: () => {
-                        window.location.href = '../../../index.php';
-                    }
-                });
-            </script>";
-        } else {
-            $alert_script = "
-            <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>
-            <script>
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: 'Failed to mark product as sold!'
-                });
-            </script>";
-        }
+    
     }
 }
 
 // Fetch all products
-$stmt = $pdo->query('SELECT * FROM product');
+$stmt = $pdo->query('SELECT * FROM products');
 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
@@ -196,10 +167,6 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
               <form action="" method="post" style="display:inline;">
                 <input type="hidden" name="id" value="<?php echo $product['id']; ?>">
                 <button type="submit" name="delete" class="btn btn-danger my-2" style="font-size:15px">Delete</button>
-              </form>
-              <form action="" method="post" style="display:inline;">
-                <input type="hidden" name="id" value="<?php echo $product['id']; ?>">
-                <button type="submit" name="mark_sold" class="btn btn-success" style="font-size:13px" value="Sold">Mark as Sold</button>
               </form>
             </td>
           </tr>
