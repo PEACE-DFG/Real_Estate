@@ -13,19 +13,16 @@ CREATE TABLE admin_users (
 -- Insert a sample record (optional for testing)
 INSERT INTO admin_users (username, email, password) VALUES ('admin', 'admin@example.com', 'hashedpassword');
 
-<!-- Alteration of the table -->
+-- Alter the table to add the 'code' column
 ALTER TABLE admin_users ADD code INT(4) NOT NULL;
 
-
-<!-- product db -->
-
+-- product db
 CREATE TABLE products (
     id INT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
     location VARCHAR(255) NOT NULL,
     price DECIMAL(10, 2) NOT NULL,
     image VARCHAR(255) NOT NULL,
-    building_status ENUM('For Rent', 'For Sell') NOT NULL,
     category ENUM('Apartment', 'Villa', 'Town House', 'Office', 'Shop') NOT NULL,
     description TEXT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
